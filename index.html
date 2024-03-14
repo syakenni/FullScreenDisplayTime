@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京时间</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    #clock {
+        font-size: 20vw; /* 字体大小占屏幕宽度的一半 */
+        text-align: center;
+    }
+
+    #date {
+        font-size: 24px;
+    }
+</style>
+</head>
+<body>
+<div id="clock"></div>
+<div id="date"></div>
+
+<script>
+function updateClock() {
+    var currentTime = new Date();
+    var hours = currentTime.getHours();
+    var minutes = currentTime.getMinutes();
+    var seconds = currentTime.getSeconds();
+
+    // 添加前导零
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+    seconds = (seconds < 10 ? "0" : "") + seconds;
+
+    var clockDiv = document.getElementById('clock');
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+    var days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    var day = days[currentTime.getDay()];
+
+    var months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    var month = months[currentTime.getMonth()];
+
+    var dateDiv = document.getElementById('date');
+    dateDiv.innerText = day + ', ' + month + ' ' + currentTime.getDate() + ', ' + currentTime.getFullYear();
+}
+
+// 更新时钟和日期显示
+updateClock(); // 立即更新一次以避免初始延迟
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
