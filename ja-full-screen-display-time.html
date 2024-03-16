@@ -1,34 +1,34 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>フルスクリーン表示現在時刻</title>
-<link rel="stylesheet" href="styles.css"> <!-- 外部スタイルシートを含む -->
-<meta name="description" content="これは、時計、日付、トグル機能を含むフルスクリーンで時間を表示するページです。このウェブページで正確な時間を更新してください。">
-<!-- Schema.org 構造化データ -->
+<title>Full Screen Display Current Time</title>
+<link rel="stylesheet" href="styles.css"> <!-- Include external stylesheet -->
+<meta name="description" content="This is a page displaying the time in full screen, including a clock, date, and toggle functions. Keep the accurate time updated on this webpage.">
+<!-- Schema.org structured data -->
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "WebPage",
-  "name": "フルスクリーン表示現在時刻",
-  "description": "これは、時計、日付、トグル機能を含むフルスクリーンで時間を表示するページです。",
+  "name": "Full Screen Display Current Time",
+  "description": "This is a page displaying the time in full screen, including a clock, date, and toggle functions.",
   "url": "https://time.haimen.fun/us-Full-screen-display-time.html"
 }
 </script>
 <meta name="robots" content="index, follow">
-<meta name="author" content="あなたの名前">
-<meta name="keywords" content="時間、時計、日付、フルスクリーン表示">
+<meta name="author" content="Your Name">
+<meta name="keywords" content="time, clock, date, full screen display">
 <link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
-<meta property="og:title" content="フルスクリーン表示現在時刻">
-<meta property="og:description" content="このウェブページで正確な時間を更新してください。">
+<meta property="og:title" content="Full Screen Display Current Time">
+<meta property="og:description" content="Keep the accurate time updated on this webpage.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://time.haimen.fun/us-Full-screen-display-time.html">
 <meta property="og:site_name" content="US Time">
-<meta property="og:locale" content="ja_JP">
+<meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="フルスクリーン表示現在時刻">
-<meta name="twitter:description" content="このウェブページで正確な時間を更新してください。">
+<meta name="twitter:title" content="Full Screen Display Current Time">
+<meta name="twitter:description" content="Keep the accurate time updated on this webpage.">
 </head>
 <body>
 <div id="clock"></div>
@@ -47,7 +47,7 @@
 var is24HourFormat = true;
 var isDateVisible = false;
 
-// 時計を更新する関数
+// Update clock function
 function updateClock() {
     var userTime = new Date();
 
@@ -73,7 +73,7 @@ function updateClock() {
 
     clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
-    // 日付を表示
+    // Display date
     if (isDateVisible) {
         var days = ['日', '月', '火', '水', '木', '金', '土'];
         var day = days[userTime.getDay()];
@@ -87,24 +87,24 @@ function updateClock() {
     }
 }
 
-// ダークモードを切り替える関数
+// Toggle dark mode function
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
 }
 
-// 時間形式を切り替える関数
+// Toggle time format function
 function toggleTimeFormat() {
     is24HourFormat = !is24HourFormat;
-    updateClock(); // 時間形式を切り替えた後すぐに時計を更新
+    updateClock(); // Update clock display immediately after toggling time format
 }
 
-// 日付の表示を切り替える関数
+// Toggle date visibility function
 function toggleDateVisibility() {
     isDateVisible = !isDateVisible;
-    updateClock(); // 日付の表示を切り替えた後すぐに時計を更新
+    updateClock(); // Update clock display immediately after toggling date visibility
 }
 
-// フルスクリーンボタンの機能
+// Fullscreen button functionality
 function toggleFullScreen() {
     if (document.fullscreenElement) {
         document.exitFullscreen();
@@ -113,9 +113,9 @@ function toggleFullScreen() {
     }
 }
 
-// 時計と日付の表示を更新
-updateClock(); // 初期遅延を回避するためすぐに更新
-setInterval(updateClock, 1000); // 1秒ごとに更新
+// Update clock and date display
+updateClock(); // Update immediately to avoid initial delay
+setInterval(updateClock, 1000); // Update every second
 </script>
 </body>
 </html>
