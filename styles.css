@@ -1,0 +1,60 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    background-color: #f0f0f0; /* 默认背景色 */
+    color: #333; /* 默认文本颜色 */
+    transition: background-color 0.5s, color 0.5s; /* 添加过渡效果 */
+}
+
+body.dark-mode {
+    background-color: #333; /* 深色模式背景色 */
+    color: #fff; /* 深色模式文本颜色 */
+}
+
+#clock {
+    font-size: 25vw; /* 字体大小占屏幕宽度的四分之一 */
+    text-align: center;
+}
+
+#date {
+    font-size: 3vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#date-text {
+    text-align: left;
+}
+
+#am-pm {
+    text-align: right;
+    font-size: 3vw;
+}
+
+#buttons {
+    margin-top: 20px;
+    display: flex;
+}
+
+#buttons button {
+    margin-right: 10px;
+}
+
+/* 在横屏模式下调整时间显示的大小 */
+@media screen and (orientation: landscape) {
+    #clock {
+        font-size: 25vw; /* 根据需要调整字体大小 */
+    }
+}
+
+/* 在移动设备上隐藏全屏按钮 */
+@media screen and (max-width: 768px) {
+    #fullscreen-btn {
+        display: none;
+    }
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>पूर्ण स्क्रीन पर वर्तमान समय प्रदर्शन</title>
+<link rel="stylesheet" href="styles.css"> <!-- बाह्य शैलीशीट शामिल करें -->
+<meta name="description" content="यह एक पूर्ण स्क्रीन पर समय प्रदर्शित करने वाला पृष्ठ है, जिसमें घड़ी, तारीख और टॉगल कार्य हैं। कृपया इस वेबपेज पर सटीक समय को अपडेट रखें।">
+<!-- Schema.org संरचित डेटा -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "name": "पूर्ण स्क्रीन पर वर्तमान समय प्रदर्शन",
+  "description": "यह एक पूर्ण स्क्रीन पर समय प्रदर्शित करने वाला पृष्ठ है, जिसमें घड़ी, तारीख और टॉगल कार्य हैं।",
+  "url": "https://time.haimen.fun/hi-full-screen-display-time.html"
+}
+</script>
+<meta name="robots" content="index, follow">
+<meta name="author" content="Your Name">
+<meta name="keywords" content="समय, घड़ी, तारीख, पूर्ण स्क्रीन प्रदर्शन">
+<link rel="canonical" href="https://time.haimen.fun/hi-full-screen-display-time.html">
+<meta property="og:title" content="पूर्ण स्क्रीन पर वर्तमान समय प्रदर्शन">
+<meta property="og:description" content="कृपया इस वेबपेज पर सटीक समय को अपडेट रखें।">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://time.haimen.fun/hi-full-screen-display-time.html">
+<meta property="og:site_name" content="पूर्ण स्क्रीन पर वर्तमान समय प्रदर्शन">
+<meta property="og:locale" content="hi_IN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="पूर्ण स्क्रीन पर वर्तमान समय प्रदर्शन">
+<meta name="twitter:description" content="कृपया इस वेबपेज पर सटीक समय को अपडेट रखें।">
+</head>
+<body>
+<div id="clock"></div>
+<div id="date">
+    <div id="date-text"></div>
+    <div id="am-pm"></div>
+</div>
+<div id="buttons">
+    <button id="darkMode-btn" onclick="toggleDarkMode()">डार्क मोड</button>
+    <button id="timeFormat-btn" onclick="toggleTimeFormat()">12घंटे/24घंटे</button>
+    <button id="dateVisibility-btn" onclick="toggleDateVisibility()">तारीख</button>
+    <button id="fullscreen-btn" onclick="toggleFullScreen()">पूर्ण स्क्रीन</button>
+</div>
+
+<script>
+var is24HourFormat = true;
+var isDateVisible = false;
+
+// Update clock function
+function updateClock() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            var response = JSON.parse(xhr.responseText);
+            var ntpTime = new Date(response.datetime);
+            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+
+            var hours = userTime.getHours();
+            var minutes = userTime.getMinutes();
+            var seconds = userTime.getSeconds();
+
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var clockDiv = document.getElementById('clock');
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+            var dateTextDiv = document.getElementById('date-text');
+            var amPmDiv = document.getElementById('am-pm');
+            if (!is24HourFormat) {
+                amPmDiv.innerText = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+            } else {
+                amPmDiv.innerText = '';
+            }
+
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+        } else {
+            console.error('Failed to fetch NTP time');
+        }
+    };
+
+    xhr.send();
+
+    // Display date
+    var dateTextDiv = document.getElementById('date-text');
+    var amPmDiv = document.getElementById('am-pm');
+    if (isDateVisible) {
+        var currentTime = new Date();
+        var days = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+        var months = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+
+        var day = days[currentTime.getDay()];
+        var month = months[currentTime.getMonth()];
+
+dateTextDiv.innerText = currentTime.getDate() + ' ' + month + ' ' + currentTime.getFullYear() + ' ' + day;
+    } else {
+        dateTextDiv.innerText = '';
+    }
+}
+
+// Toggle dark mode function
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// Toggle time format function
+function toggleTimeFormat() {
+    is24HourFormat = !is24HourFormat;
+    updateClock(); // Update clock display immediately after toggling time format
+}
+
+// Toggle date visibility function
+function toggleDateVisibility() {
+    isDateVisible = !isDateVisible;
+    updateClock(); // Update clock display immediately after toggling date visibility
+}
+
+// Fullscreen button functionality
+function toggleFullScreen() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+}
+updateClock(); // प्रारंभिक देरी से बचने के लिए तत्काल अपडेट करें
+setInterval(updateClock, 1000); // प्रति सेकंड अपडेट करें
+</script>
+</body>
+</html>

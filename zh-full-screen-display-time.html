@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全屏显示当前时间</title>
+<link rel="stylesheet" href="styles.css"> <!-- 包含外部样式表 -->
+<meta name="description" content="这是一个全屏显示时间的页面，包括时钟、日期和切换功能。在此页面上保持准确的时间更新。">
+<!-- Schema.org结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "name": "全屏显示当前时间",
+  "description": "这是一个全屏显示时间的页面，包括时钟、日期和切换功能。",
+  "url": "https://time.haimen.fun/us-Full-screen-display-time.html"
+}
+</script>
+<meta name="robots" content="index, follow">
+<meta name="author" content="Your Name">
+<meta name="keywords" content="US time, clock, date, full screen display">
+<link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:title" content="全屏显示当前时间">
+<meta property="og:description" content="在此页面上保持准确的时间更新。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:site_name" content="US Time">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="全屏显示当前时间">
+<meta name="twitter:description" content="在此页面上保持准确的时间更新。">
+</head>
+<body>
+<div id="clock"></div>
+<div id="date">
+    <div id="date-text"></div>
+    <div id="am-pm"></div>
+</div>
+<div id="buttons">
+    <button id="darkMode-btn" onclick="toggleDarkMode()">深色模式</button>
+    <button id="timeFormat-btn" onclick="toggleTimeFormat()">12H/24H</button>
+    <button id="dateVisibility-btn" onclick="toggleDateVisibility()">日期</button>
+    <button id="fullscreen-btn" onclick="toggleFullScreen()">全屏</button>
+</div>
+
+<script>
+var is24HourFormat = true;
+var isDateVisible = false;
+
+// 更新时钟显示的函数
+function updateClock() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            var response = JSON.parse(xhr.responseText);
+            var ntpTime = new Date(response.datetime);
+            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+
+            var hours = userTime.getHours();
+            var minutes = userTime.getMinutes();
+            var seconds = userTime.getSeconds();
+
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var clockDiv = document.getElementById('clock');
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+            var dateTextDiv = document.getElementById('date-text');
+            var amPmDiv = document.getElementById('am-pm');
+            if (!is24HourFormat) {
+                amPmDiv.innerText = hours >= 12 ? '下午' : '上午';
+                hours = hours % 12 || 12;
+            } else {
+                amPmDiv.innerText = '';
+            }
+
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+        } else {
+            console.error('Failed to fetch NTP time');
+        }
+    };
+
+    xhr.send();
+
+    // 显示日期
+    var dateTextDiv = document.getElementById('date-text');
+    var amPmDiv = document.getElementById('am-pm');
+    if (isDateVisible) {
+        var currentTime = new Date();
+        var days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        var day = days[currentTime.getDay()];
+
+        var year = currentTime.getFullYear();
+        var month = currentTime.getMonth() + 1; // 月份从0开始，所以要加1
+        var date = currentTime.getDate();
+
+        var dateString = year + '年' + month + '月' + date + '日 ' + day;
+        dateTextDiv.innerText = dateString;
+    } else {
+        dateTextDiv.innerText = '';
+    }
+}
+
+// 切换深色模式的函数
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// 切换时间格式的函数
+function toggleTimeFormat() {
+    is24HourFormat = !is24HourFormat;
+    updateClock(); // 切换时间格式后立即更新时钟显示
+}
+
+// 控制日期显示的函数
+function toggleDateVisibility() {
+    isDateVisible = !isDateVisible;
+    updateClock(); // 切换日期显示后立即更新时钟显示
+}
+
+// 全屏按钮功能
+function toggleFullScreen() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+}
+
+// 更新时钟和日期显示
+updateClock(); // 立即更新以避免初始延迟
+setInterval(updateClock, 1000); // 每秒更新一次
+</script>
+</body>
+</html>

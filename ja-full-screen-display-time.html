@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フルスクリーン表示現在時刻</title>
+<link rel="stylesheet" href="styles.css"> <!-- 外部スタイルシートを含む -->
+<meta name="description" content="これは、時計、日付、トグル機能を含むフルスクリーンで時間を表示するページです。このウェブページで正確な時間を更新してください。">
+<!-- Schema.org 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "name": "フルスクリーン表示現在時刻",
+  "description": "これは、時計、日付、トグル機能を含むフルスクリーンで時間を表示するページです。",
+  "url": "https://time.haimen.fun/us-Full-screen-display-time.html"
+}
+</script>
+<meta name="robots" content="index, follow">
+<meta name="author" content="あなたの名前">
+<meta name="keywords" content="米国時間、時計、日付、フルスクリーン表示">
+<link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:title" content="フルスクリーン表示現在時刻">
+<meta property="og:description" content="このウェブページで正確な時間を更新してください。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:site_name" content="US Time">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="フルスクリーン表示現在時刻">
+<meta name="twitter:description" content="このウェブページで正確な時間を更新してください。">
+</head>
+<body>
+<div id="clock"></div>
+<div id="date">
+    <div id="date-text"></div>
+    <div id="am-pm"></div>
+</div>
+<div id="buttons">
+    <button id="darkMode-btn" onclick="toggleDarkMode()">ダークモード</button>
+    <button id="timeFormat-btn" onclick="toggleTimeFormat()">12H/24H</button>
+    <button id="dateVisibility-btn" onclick="toggleDateVisibility()">日付</button>
+    <button id="fullscreen-btn" onclick="toggleFullScreen()">フルスクリーン</button>
+</div>
+
+<script>
+var is24HourFormat = true;
+var isDateVisible = false;
+
+// 時計を更新する関数
+function updateClock() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            var response = JSON.parse(xhr.responseText);
+            var ntpTime = new Date(response.datetime);
+            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+
+            var hours = userTime.getHours();
+            var minutes = userTime.getMinutes();
+            var seconds = userTime.getSeconds();
+
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var clockDiv = document.getElementById('clock');
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+            var dateTextDiv = document.getElementById('date-text');
+            var amPmDiv = document.getElementById('am-pm');
+            if (!is24HourFormat) {
+                amPmDiv.innerText = hours >= 12 ? '午後' : '午前'; 
+                hours = hours % 12 || 12;
+            } else {
+                amPmDiv.innerText = '';
+            }
+
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+        } else {
+            console.error('Failed to fetch NTP time');
+        }
+    };
+
+    xhr.send();
+
+    // 日付を表示
+    var dateTextDiv = document.getElementById('date-text');
+    var amPmDiv = document.getElementById('am-pm');
+    if (isDateVisible) {
+        var currentTime = new Date();
+        var days = ['日', '月', '火', '水', '木', '金', '土'];
+        var day = days[currentTime.getDay()];
+
+        var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        var month = months[currentTime.getMonth()];
+
+        dateTextDiv.innerText = currentTime.getFullYear() + '年' +month  + currentTime.getDate() + '日（' +  day+ '）';
+    } else {
+        dateTextDiv.innerText = '';
+    }
+}
+
+// ダークモードを切り替える関数
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// 時間形式を切り替える関数
+function toggleTimeFormat() {
+    is24HourFormat = !is24HourFormat;
+    updateClock(); // 時間形式を切り替えた後すぐに時計を更新
+}
+
+// 日付の表示を切り替える関数
+function toggleDateVisibility() {
+    isDateVisible = !isDateVisible;
+    updateClock(); // 日付の表示を切り替えた後すぐに時計を更新
+}
+
+// フルスクリーンボタンの機能
+function toggleFullScreen() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+}
+
+// 時計と日付の表示を更新
+updateClock(); // 初期遅延を回避するためすぐに更新
+setInterval(updateClock, 1000); // 1秒ごとに更新
+</script>
+</body>
+</html>

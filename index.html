@@ -1,121 +1,115 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>中国时间 - 北京时间全屏显示</title>
-<meta name="description" content="这是一个全屏显示北京时间的页面，包括时钟、日期和切换功能。在这个网页上保持更新的准确北京时间。">
-<!-- Schema.org结构化数据 -->
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "WebPage",
-  "name": "中国时间 - 北京时间全屏显示",
-  "description": "这是一个全屏显示北京时间的页面，包括时钟、日期和切换功能。",
-  "url": "https://time.haimen.fun/china-Full-screen-display-time.html"
-}
-</script>
-<meta name="robots" content="index, follow">
-<meta name="keywords" content="中国时间，北京时间，时钟，日期，全屏显示">
-<link rel="canonical" href="https://time.haimen.fun/china-Full-screen-display-time.html">
-<meta property="og:title" content="中国时间 - 北京时间全屏显示">
-<meta property="og:description" content="在这个网页上保持更新的准确北京时间。">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://time.haimen.fun/china-Full-screen-display-time.html">
-<meta property="og:site_name" content="中国时间">
-<meta property="og:locale" content="zh_CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="中国时间 - 北京时间全屏显示">
-<meta name="twitter:description" content="在这个网页上保持更新的准确北京时间。">
-<style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        flex-direction: column;
-        background-color: #f0f0f0; /* 默认背景色 */
-        color: #333; /* 默认文本颜色 */
-        transition: background-color 0.5s, color 0.5s; /* 添加过渡效果 */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全屏显示当前时间 - 国家</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
 
-    body.dark-mode {
-        background-color: #333; /* 深色模式背景色 */
-        color: #fff; /* 深色模式文本颜色 */
-    }
+        .language-section {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
 
-    #clock {
-        font-size: 20vw; /* 字体大小占屏幕宽度的一半 */
-        text-align: center;
-    }
+        a {
+            text-decoration: none;
+            color: #333;
+        }
 
-    #date {
-        font-size: 24px;
-    }
+        h2 {
+            margin: 0;
+            padding: 5px;
+        }
 
-    #buttons {
-        margin-top: 20px;
-    }
-</style>
+        footer {
+            margin-top: 20px;
+            color: #777;
+        }
+    </style>
+    <meta name="description" content="查看各国的全屏显示时间。单击按钮，在全屏模式下显示当前时间。">
 </head>
 <body>
-<div id="clock"></div>
-<div id="date"></div>
-<div id="buttons">
-    <button onclick="toggleDarkMode()">切换深色模式</button>
-    <button onclick="toggleTimeFormat()">切换时间格式</button>
-</div>
+    <h1>全屏显示当前时间</h1>
 
-<script>
-var is24HourFormat = true;
+    <!-- First Row -->
+    <section class="language-section">
+        <a href="zh-full-screen-display-time.html" lang="zh">
+            <h2 lang="zh">全屏显示当前时间</h2>
+        </a>
+    </section>
 
-// 更新时钟显示的函数
-function updateClock() {
-    // 获取当前时间
-    var currentTime = new Date();
-    var hours = currentTime.getHours();
-    var minutes = currentTime.getMinutes();
-    var seconds = currentTime.getSeconds();
+    <section class="language-section">
+        <a href="hi-full-screen-display-time.html" lang="hi">
+            <h2 lang="hi">पूर्ण स्क्रीन में वर्तमान समय दिखाएं</h2>
+        </a>
+    </section>
 
-    // 判断时间格式
-    if (!is24HourFormat) {
-        hours = (hours % 12) || 12;
-    }
+    <section class="language-section">
+        <a href="en-full-screen-display-time.html" lang="en">
+            <h2 lang="en">Display Current Time in Full Screen</h2>
+        </a>
+    </section>
 
-    // 添加前导零
-    hours = (hours < 10 ? "0" : "") + hours;
-    minutes = (minutes < 10 ? "0" : "") + minutes;
-    seconds = (seconds < 10 ? "0" : "") + seconds;
+    <!-- Second Row -->
+    <section class="language-section">
+        <a href="id-full-screen-display-time.html" lang="id">
+            <h2 lang="id">Tampilkan Waktu Saat Ini Layar Penuh</h2>
+        </a>
+    </section>
 
-    var clockDiv = document.getElementById('clock');
-    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+    <section class="language-section">
+        <a href="pt-full-screen-display-time.html" lang="pt">
+            <h2 lang="pt">Mostrar a hora atual em tela cheia</h2>
+        </a>
+    </section>
 
-    // 英文日期和月份的数组
-    var days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-    var day = days[currentTime.getDay()];
+    <section class="language-section">
+        <a href="ur-full-screen-display-time.html" lang="ur">
+            <h2 lang="ur">پوری اسکرین پر موجودہ وقت دکھائیں</h2>
+        </a>
+    </section>
 
-    var months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
-    var month = months[currentTime.getMonth()];
+    <!-- Third Row -->
+    <section class="language-section">
+        <a href="bn-full-screen-display-time.html" lang="bn">
+            <h2 lang="bn">পূর্ণ স্ক্রিনে বর্তমান সময় দেখান</h2>
+        </a>
+    </section>
 
-    var dateDiv = document.getElementById('date');
-    dateDiv.innerText = day + '，' + month + ' ' + currentTime.getDate() + '，' + currentTime.getFullYear();
-}
+    <section class="language-section">
+        <a href="ru-full-screen-display-time.html" lang="ru">
+            <h2 lang="ru">Показать текущее время на полном экране</h2>
+        </a>
+    </section>
 
-// 切换深色模式的函数
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-}
+    <section class="language-section">
+        <a href="es-full-screen-display-time.html" lang="es">
+            <h2 lang="es">Mostrar la hora actual en pantalla completa</h2>
+        </a>
+    </section>
 
-// 切换时间格式的函数
-function toggleTimeFormat() {
-    is24HourFormat = !is24HourFormat;
-    updateClock(); // 切换时间格式后立即更新时钟显示
-}
+    <!-- Fourth Row -->
+    <section class="language-section">
+        <a href="ja-full-screen-display-time.html" lang="ja">
+            <h2 lang="ja">全画面で現在の時間を表示</h2>
+        </a>
+    </section>
 
-// 更新时钟和日期显示
-updateClock(); // 立即更新以避免初始延迟
-setInterval(updateClock, 1000); // 每秒更新一次
-</script>
+    <section class="language-section">
+        <a href="de-full-screen-display-time.html" lang="de">
+            <h2 lang="de">Aktuelle Uhrzeit im Vollbildmodus anzeigen</h2>
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Full Screen Display Time. All rights reserved.</p>
+    </footer>
 </body>
 </html>

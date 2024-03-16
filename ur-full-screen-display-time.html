@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پوری اسکرین میں موجود وقت دکھائیں</title>
+<link rel="stylesheet" href="styles.css"> <!-- بیرونی سٹائل شیٹ شامل کریں -->
+<meta name="description" content="یہ ایک صفحہ ہے جو وقت کو پوری اسکرین میں دکھاتا ہے، جس میں ایک گھڑی، تاریخ، اور ٹوگل فنکشن شامل ہیں۔ اس ویب پیج پر درست وقت کو اپ ٹو دیت رکھیں۔">
+<!-- Schema.org کنسٹرکٹڈ ڈیٹا -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebPage",
+  "name": "پوری اسکرین میں موجود وقت دکھائیں",
+  "description": "یہ ایک صفحہ ہے جو وقت کو پوری اسکرین میں دکھاتا ہے، جس میں ایک گھڑی، تاریخ، اور ٹوگل فنکشن شامل ہیں۔",
+  "url": "https://time.haimen.fun/us-Full-screen-display-time.html"
+}
+</script>
+<meta name="robots" content="index, follow">
+<meta name="author" content="آپ کا نام">
+<meta name="keywords" content="امریکی وقت، گھڑی، تاریخ، پوری اسکرین دکھائیں">
+<link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:title" content="پوری اسکرین میں موجود وقت دکھائیں">
+<meta property="og:description" content="اس ویب پیج پر درست وقت کو اپ ٹو دیت رکھیں۔">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://time.haimen.fun/us-Full-screen-display-time.html">
+<meta property="og:site_name" content="امریکی وقت">
+<meta property="og:locale" content="ur_PK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="پوری اسکرین میں موجود وقت دکھائیں">
+<meta name="twitter:description" content="اس ویب پیج پر درست وقت کو اپ ٹو دیت رکھیں۔">
+</head>
+<body>
+<div id="clock"></div>
+<div id="date">
+    <div id="date-text"></div>
+    <div id="am-pm"></div>
+</div>
+<div id="buttons">
+    <button id="darkMode-btn" onclick="toggleDarkMode()">داک کا موڈ</button>
+    <button id="timeFormat-btn" onclick="toggleTimeFormat()">12H/24H</button>
+    <button id="dateVisibility-btn" onclick="toggleDateVisibility()">تاریخ</button>
+    <button id="fullscreen-btn" onclick="toggleFullScreen()">پوری اسکرین</button>
+</div>
+
+<script>
+var is24HourFormat = true;
+var isDateVisible = false;
+
+// وقت کو اپ ڈیٹ کرنے والی فنکشن
+function updateClock() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            var response = JSON.parse(xhr.responseText);
+            var ntpTime = new Date(response.datetime);
+            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+
+            var hours = userTime.getHours();
+            var minutes = userTime.getMinutes();
+            var seconds = userTime.getSeconds();
+
+            hours = (hours < 10 ? "0" : "") + hours;
+            minutes = (minutes < 10 ? "0" : "") + minutes;
+            seconds = (seconds < 10 ? "0" : "") + seconds;
+
+            var clockDiv = document.getElementById('clock');
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+            var dateTextDiv = document.getElementById('date-text');
+            var amPmDiv = document.getElementById('am-pm');
+            if (!is24HourFormat) {
+                amPmDiv.innerText = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+            } else {
+                amPmDiv.innerText = '';
+            }
+
+            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+        } else {
+            console.error('NTP وقت حاصل کرنے میں ناکامی');
+        }
+    };
+
+    xhr.send();
+
+    // تاریخ دکھائیں
+    var dateTextDiv = document.getElementById('date-text');
+    var amPmDiv = document.getElementById('am-pm');
+    if (isDateVisible) {
+        var currentTime = new Date();
+        var days = ['اتوار', 'سوموار', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ'];
+        var day = days[currentTime.getDay()];
+
+        var months = ['جنوری', 'فروری', 'مارچ', 'اپریل', 'مئی', 'جون', 'جولائی', 'اگست', 'ستمبر', 'اکتوبر', 'نومبر', 'دسمبر'];
+        var month = months[currentTime.getMonth()];
+
+        dateTextDiv.innerText = day + ', ' + currentTime.getDate() + ' ' + month + ', ' + currentTime.getFullYear();
+    } else {
+        dateTextDiv.innerText = '';
+    }
+}
+
+// تاریک موڈ کی تبدیلی کرنے والی فنکشن
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// وقت کے فارمیٹ کی تبدیلی کرنے والی فنکشن
+function toggleTimeFormat() {
+    is24HourFormat = !is24HourFormat;
+    updateClock(); // وقت کے فارمیٹ کو تبدیل کرنے کے بعد فوراً ریلوڈ کریں
+}
+
+// تاریخ کی دکھائی کی تبدیلی کرنے والی فنکشن
+function toggleDateVisibility() {
+    isDateVisible = !isDateVisible;
+    updateClock(); // تاریخ کی دکھائی کو تبدیل کرنے کے بعد فوراً ریلوڈ کریں
+}
+
+// پوری اسکرین بٹن کی فنکشن
+function toggleFullScreen() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+}
+
+// وقت اور تاریخ کی دکھائی کو اپ ڈیٹ کریں
+updateClock(); // ابتدائی دیری کے بغیر فوری اپ ڈیٹ کرنے کے لئے
+setInterval(updateClock, 1000); // ہر سیکنڈ اپ ڈیٹ کریں
+</script>
+</body>
+</html>
