@@ -18,7 +18,7 @@
 </script>
 <meta name="robots" content="index, follow">
 <meta name="author" content="あなたの名前">
-<meta name="keywords" content="米国時間、時計、日付、フルスクリーン表示">
+<meta name="keywords" content="時間、時計、日付、フルスクリーン表示">
 <link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
 <meta property="og:title" content="フルスクリーン表示現在時刻">
 <meta property="og:description" content="このウェブページで正確な時間を更新してください。">
@@ -49,55 +49,39 @@ var isDateVisible = false;
 
 // 時計を更新する関数
 function updateClock() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+    var userTime = new Date();
 
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var response = JSON.parse(xhr.responseText);
-            var ntpTime = new Date(response.datetime);
-            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+    var hours = userTime.getHours();
+    var minutes = userTime.getMinutes();
+    var seconds = userTime.getSeconds();
 
-            var hours = userTime.getHours();
-            var minutes = userTime.getMinutes();
-            var seconds = userTime.getSeconds();
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+    seconds = (seconds < 10 ? "0" : "") + seconds;
 
-            hours = (hours < 10 ? "0" : "") + hours;
-            minutes = (minutes < 10 ? "0" : "") + minutes;
-            seconds = (seconds < 10 ? "0" : "") + seconds;
+    var clockDiv = document.getElementById('clock');
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
-            var clockDiv = document.getElementById('clock');
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-
-            var dateTextDiv = document.getElementById('date-text');
-            var amPmDiv = document.getElementById('am-pm');
-            if (!is24HourFormat) {
-                amPmDiv.innerText = hours >= 12 ? '午後' : '午前'; 
-                hours = hours % 12 || 12;
-            } else {
-                amPmDiv.innerText = '';
-            }
-
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-        } else {
-            console.error('Failed to fetch NTP time');
-        }
-    };
-
-    xhr.send();
-
-    // 日付を表示
     var dateTextDiv = document.getElementById('date-text');
     var amPmDiv = document.getElementById('am-pm');
+    if (!is24HourFormat) {
+        amPmDiv.innerText = hours >= 12 ? '午後' : '午前'; 
+        hours = hours % 12 || 12;
+    } else {
+        amPmDiv.innerText = '';
+    }
+
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+    // 日付を表示
     if (isDateVisible) {
-        var currentTime = new Date();
         var days = ['日', '月', '火', '水', '木', '金', '土'];
-        var day = days[currentTime.getDay()];
+        var day = days[userTime.getDay()];
 
         var months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-        var month = months[currentTime.getMonth()];
+        var month = months[userTime.getMonth()];
 
-        dateTextDiv.innerText = currentTime.getFullYear() + '年' +month  + currentTime.getDate() + '日（' +  day+ '）';
+        dateTextDiv.innerText = userTime.getFullYear() + '年' + month + userTime.getDate() + '日（' +  day+ '）';
     } else {
         dateTextDiv.innerText = '';
     }

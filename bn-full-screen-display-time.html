@@ -18,7 +18,7 @@
 </script>
 <meta name="robots" content="index, follow">
 <meta name="author" content="আপনার নাম">
-<meta name="keywords" content="মার্কিন সময়, ঘড়ি, তারিখ, পূর্ণ স্ক্রিন দেখান">
+<meta name="keywords" content="সময়, ঘড়ি, তারিখ, পূর্ণ স্ক্রিন ডিসপ্লে">
 <link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
 <meta property="og:title" content="পূর্ণ স্ক্রিনে বর্তমান সময় দেখান">
 <meta property="og:description" content="এই ওয়েব পৃষ্ঠায় সঠিক সময়টি নিরাপত্তার সাথে আপডেট করুন।">
@@ -49,55 +49,39 @@ var isDateVisible = false;
 
 // সময় আপডেট করার ফাংশন
 function updateClock() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+    var userTime = new Date();
 
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var response = JSON.parse(xhr.responseText);
-            var ntpTime = new Date(response.datetime);
-            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+    var hours = userTime.getHours();
+    var minutes = userTime.getMinutes();
+    var seconds = userTime.getSeconds();
 
-            var hours = userTime.getHours();
-            var minutes = userTime.getMinutes();
-            var seconds = userTime.getSeconds();
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+    seconds = (seconds < 10 ? "0" : "") + seconds;
 
-            hours = (hours < 10 ? "0" : "") + hours;
-            minutes = (minutes < 10 ? "0" : "") + minutes;
-            seconds = (seconds < 10 ? "0" : "") + seconds;
+    var clockDiv = document.getElementById('clock');
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
-            var clockDiv = document.getElementById('clock');
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-
-            var dateTextDiv = document.getElementById('date-text');
-            var amPmDiv = document.getElementById('am-pm');
-            if (!is24HourFormat) {
-                amPmDiv.innerText = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
-                hours = hours % 12 || 12;
-            } else {
-                amPmDiv.innerText = '';
-            }
-
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-        } else {
-            console.error('NTP থেকে সময় প্রাপ্ত করা যাচ্ছে না');
-        }
-    };
-
-    xhr.send();
-
-    // তারিখ দেখান
     var dateTextDiv = document.getElementById('date-text');
     var amPmDiv = document.getElementById('am-pm');
+    if (!is24HourFormat) {
+        amPmDiv.innerText = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+        hours = hours % 12 || 12;
+    } else {
+        amPmDiv.innerText = '';
+    }
+
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+    // তারিখ দেখান
     if (isDateVisible) {
-        var currentTime = new Date();
         var days = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
-        var day = days[currentTime.getDay()];
+        var day = days[userTime.getDay()];
 
         var months = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
-        var month = months[currentTime.getMonth()];
+        var month = months[userTime.getMonth()];
 
-        dateTextDiv.innerText = day + ', ' + currentTime.getDate() + ' ' + month + ', ' + currentTime.getFullYear();
+        dateTextDiv.innerText = day + ', ' + userTime.getDate() + ' ' + month + ', ' + userTime.getFullYear();
     } else {
         dateTextDiv.innerText = '';
     }
@@ -108,7 +92,7 @@ function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
 }
 
-// সময় ফরম্যাট টগল করার ফাংশন
+// সময় ফর্ম্যাট টগল করার ফাংশন
 function toggleTimeFormat() {
     is24HourFormat = !is24HourFormat;
     updateClock(); // সময় ফর্ম্যাট টগল করার পরে তাৎক্ষণিকভাবে আপডেট করুন

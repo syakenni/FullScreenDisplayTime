@@ -18,7 +18,7 @@
 </script>
 <meta name="robots" content="index, follow">
 <meta name="author" content="Your Name">
-<meta name="keywords" content="US time, clock, date, full screen display">
+<meta name="keywords" content="time, clock, date, full screen display">
 <link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
 <meta property="og:title" content="Full Screen Display Current Time">
 <meta property="og:description" content="Keep the accurate time updated on this webpage.">
@@ -49,55 +49,39 @@ var isDateVisible = false;
 
 // Update clock function
 function updateClock() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+    var userTime = new Date();
 
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var response = JSON.parse(xhr.responseText);
-            var ntpTime = new Date(response.datetime);
-            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+    var hours = userTime.getHours();
+    var minutes = userTime.getMinutes();
+    var seconds = userTime.getSeconds();
 
-            var hours = userTime.getHours();
-            var minutes = userTime.getMinutes();
-            var seconds = userTime.getSeconds();
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+    seconds = (seconds < 10 ? "0" : "") + seconds;
 
-            hours = (hours < 10 ? "0" : "") + hours;
-            minutes = (minutes < 10 ? "0" : "") + minutes;
-            seconds = (seconds < 10 ? "0" : "") + seconds;
+    var clockDiv = document.getElementById('clock');
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
-            var clockDiv = document.getElementById('clock');
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-
-            var dateTextDiv = document.getElementById('date-text');
-            var amPmDiv = document.getElementById('am-pm');
-            if (!is24HourFormat) {
-                amPmDiv.innerText = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12;
-            } else {
-                amPmDiv.innerText = '';
-            }
-
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-        } else {
-            console.error('Failed to fetch NTP time');
-        }
-    };
-
-    xhr.send();
-
-    // Display date
     var dateTextDiv = document.getElementById('date-text');
     var amPmDiv = document.getElementById('am-pm');
+    if (!is24HourFormat) {
+        amPmDiv.innerText = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+    } else {
+        amPmDiv.innerText = '';
+    }
+
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+
+    // Display date
     if (isDateVisible) {
-        var currentTime = new Date();
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        var day = days[currentTime.getDay()];
+        var day = days[userTime.getDay()];
 
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var month = months[currentTime.getMonth()];
+        var month = months[userTime.getMonth()];
 
-        dateTextDiv.innerText = month + ' ' + currentTime.getDate() + ', ' + currentTime.getFullYear() + ' ' + day;
+        dateTextDiv.innerText = month + ' ' + userTime.getDate() + ', ' + userTime.getFullYear() + ' ' + day;
     } else {
         dateTextDiv.innerText = '';
     }

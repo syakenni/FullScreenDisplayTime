@@ -18,7 +18,7 @@
 </script>
 <meta name="robots" content="index, follow">
 <meta name="author" content="Ваше имя">
-<meta name="keywords" content="Американское время, часы, дата, полный экран">
+<meta name="keywords" content="время, часы, дата, полноэкранный режим">
 <link rel="canonical" href="https://time.haimen.fun/us-Full-screen-display-time.html">
 <meta property="og:title" content="Полный экран с отображением текущего времени">
 <meta property="og:description" content="Обновляйте время на этой веб-странице с надежной защитой.">
@@ -49,48 +49,34 @@ var isDateVisible = false;
 
 // Функция обновления времени
 function updateClock() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://worldtimeapi.org/api/ip', true);
+    var currentTime = new Date();
 
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 400) {
-            var response = JSON.parse(xhr.responseText);
-            var ntpTime = new Date(response.datetime);
-            var userTime = new Date(ntpTime.toLocaleString('en-US', {timeZone: response.timezone}));
+    var hours = currentTime.getHours();
+    var minutes = currentTime.getMinutes();
+    var seconds = currentTime.getSeconds();
 
-            var hours = userTime.getHours();
-            var minutes = userTime.getMinutes();
-            var seconds = userTime.getSeconds();
+    hours = (hours < 10 ? "0" : "") + hours;
+    minutes = (minutes < 10 ? "0" : "") + minutes;
+    seconds = (seconds < 10 ? "0" : "") + seconds;
 
-            hours = (hours < 10 ? "0" : "") + hours;
-            minutes = (minutes < 10 ? "0" : "") + minutes;
-            seconds = (seconds < 10 ? "0" : "") + seconds;
+    var clockDiv = document.getElementById('clock');
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
-            var clockDiv = document.getElementById('clock');
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
+    var dateTextDiv = document.getElementById('date-text');
+    var amPmDiv = document.getElementById('am-pm');
+    if (!is24HourFormat) {
+        amPmDiv.innerText = hours >= 12 ? 'ПОСЛЕ ПОЛУДНЯ' : 'ДО ПОЛУДНЯ';
+        hours = hours % 12 || 12;
+    } else {
+        amPmDiv.innerText = '';
+    }
 
-            var dateTextDiv = document.getElementById('date-text');
-            var amPmDiv = document.getElementById('am-pm');
-            if (!is24HourFormat) {
-                amPmDiv.innerText = hours >= 12 ? 'ПОСЛЕ ПОЛУДНЯ' : 'ДО ПОЛУДНЯ';
-                hours = hours % 12 || 12;
-            } else {
-                amPmDiv.innerText = '';
-            }
-
-            clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
-        } else {
-            console.error('Не удалось получить время с NTP');
-        }
-    };
-
-    xhr.send();
+    clockDiv.innerText = hours + ":" + minutes + ":" + seconds;
 
     // Отображение даты
     var dateTextDiv = document.getElementById('date-text');
     var amPmDiv = document.getElementById('am-pm');
     if (isDateVisible) {
-        var currentTime = new Date();
         var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
         var day = days[currentTime.getDay()];
 
