@@ -16,7 +16,7 @@ body.dark-mode {
 }
 
 #clock {
-    font-size: 25vw; /* 字体大小占屏幕宽度的四分之一 */
+    font-size: 23vw; /* 字体大小占屏幕宽度的四分之一 */
     text-align: center;
 }
 
